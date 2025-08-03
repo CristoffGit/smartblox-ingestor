@@ -1,0 +1,31 @@
+services:
+  ingestor:
+    build: .
+    env_file:
+      - .env 
+    depends_on:
+      mongo:
+        condition: service_healthy
+    restart: unless-stopped
+    logging:
+      options:
+        max-size: 10m
+        max-file: 3
+
+  mongo:
+    image: mongo
+    container_name: smartblox_mongo
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh mongo:27017 --quiet
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    restart: unless-stopped
+
+volumes:
+  mongo-data:
