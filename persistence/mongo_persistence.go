@@ -13,8 +13,8 @@ import (
 
 // Persisting and retrieving running metrics
 type MetricsStore interface {
-	Save(metrics *types.Metrics) error
-	Load() (*types.Metrics, error)
+	Save(ctx context.Context, metrics *types.Metrics) error
+	Load(ctx context.Context) (*types.Metrics, error)
 }
 
 // Writing transaction data
@@ -114,9 +114,8 @@ func (s *MongoStore) Load(ctx context.Context) (*types.Metrics, error) {
 func (s *MongoStore) Log(ctx context.Context, tx types.Transaction) error {
 	collection := s.db.Collection(txCollection)
 	_, err := collection.InsertOne(ctx, tx)
-
 	if mongo.IsDuplicateKeyError(err) {
-		fmt.Printf("INFO: Duplicate transaction %s found, skipping.\n", tx.Sig)
+		fmt.Printf("Duplicate transaction %s found, skipping.\n", tx.Sig)
 		return nil
 	}
 

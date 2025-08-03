@@ -8,7 +8,7 @@ type Status struct {
 // Represents the response from /api/block/{round}
 type Block struct {
 	Round uint64        `json:"round"`
-	Txs   []Transaction `json:"transactions"`
+	Txs   []Transaction `json:"txs"`
 }
 
 // Contains the core information about a transaction

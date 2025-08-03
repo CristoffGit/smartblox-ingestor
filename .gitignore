@@ -1,3 +1,4 @@
 *.exe
 smartblox-ingestor
 .env
+.vscode
