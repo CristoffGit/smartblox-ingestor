@@ -33,9 +33,9 @@ type AmountRecord struct {
 
 // Holding metrics
 type Metrics struct {
-	LastProcessedRound uint64 `json:"last_processed_round`
-	TxnCount           uint64 `json:"txn_count"`
-	TotalAmount        uint64 `json:"total_amount"`
-	MinAmount          uint64 `json:"min_amount"`
-	MaxAmount          uint64 `json:"max_amount"`
+	LastProcessedRound uint64       `json:"last_processed_round`
+	TxnCount           uint64       `json:"txn_count"`
+	TotalAmount        uint64       `json:"total_amount"`
+	MinAmount          AmountRecord `json:"min_amount"`
+	MaxAmount          AmountRecord `json:"max_amount"`
 }
