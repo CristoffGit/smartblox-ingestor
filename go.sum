@@ -1,0 +1,4 @@
+github.com/Metrika-Inc/blckmock v0.0.0-20250711111039-097762b0f378 h1:XPaqM1IlAeLXgaBJbhhWMH3bvnaZPpA4G6PvN/3jUro=
+github.com/Metrika-Inc/blckmock v0.0.0-20250711111039-097762b0f378/go.mod h1:c1/XIZiabPgaxm1Nfq10LFBVMr6E/RHR69JGA7/yBzU=
+github.com/jinzhu/copier v0.4.0 h1:w3ciUoD19shMCRargcpm0cm91ytaBhDvuRpz1ODO/U8=
+github.com/jinzhu/copier v0.4.0/go.mod h1:DfbEm0FYsaqBcKcFuvmOZb218JkPGtvSHsKg8S8hyyg=
