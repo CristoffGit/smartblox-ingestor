@@ -2,3 +2,4 @@
 smartblox-ingestor
 .env
 .vscode
+/data

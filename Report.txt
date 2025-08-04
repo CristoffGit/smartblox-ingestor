@@ -1,0 +1,39 @@
+Design Report: SmartBlox Blockchain Ingestion (Metrica Task)
+
+This report outlines the architecture and design decisions behind the task of Metric, a Go application developed to consume blockchain data, process asset transfers, and maintain persistent state. The primary design goals were robustness, maintainability, and extensibility.
+
+The final implementation successfully connects to the blockchain API, performs a concurrent backfill of historical data, and enters a steady polling state to process new blocks. It uses MongoDB for persistent storage and is designed with clean, decoupled components.
+
+At first I checked the mock API that you provided which mocking from about 24 days ago and going to about unfinite to generate blocks and provide a default transaction. 
+
+Core Design Decisions:
+The architecture was intentionally designed to be modular and resilient, leveraging idiomatic Go practices and established software design principles.
+
+Architecture:
+The application is segregated into distinct packages (client, processor, persistence, types, config), each with a single responsibility. This separation of concerns is the cornerstone of the design.
+
+MongoDB for Scalable Persistence:
+Because of Scalability I prefer to use Nosql. Also use a unique index on the transaction signature (sig). This is a crucial feature that makes our write operations idempotent.
+
+
+Stateful Recovery and Backfilling:
+To handle robustness against crashes and downtime I define backfill function. The system cannot lose its place. By persisting the LastProcessedRound along with the metrics, the service can immediately determine where it left off upon restart. The backfill function is then invoked to process all intermediary blocks before resuming normal operation, guaranteeing data integrity.
+
+
+Potential Problems & Limitations
+While the current design is robust, it has several limitations that would need to be addressed in a full-scale production environment.
+
+- Scalability:
+Polling-Based Ingestion: The main loop relies on a time.Ticker to poll for new blocks. This approach is inefficient, creates unnecessary network traffic, and introduces latency, as we must always wait for the next tick to see a new block.
+
+
+Future Improvements:
+- Move to Event-Driven Ingestion
+Instead of polling, the service should use a more efficient, real-time communication protocol such as transition to a WebSocket or gRPC stream. 
+
+- Concurrent Backfill for Performance
+Parallelizing the I/O-bound backfill process using worker goroutines to accelerate the application's startup time. By fetching multiple blocks concurrently, we can significantly reduce the time spent waiting for network responses.
+
+- Implement a Worker Pool for Main Processing
+Change main loop into a producer-consumer model. One goroutine (the producer) would fetch new blocks and place them on a channel. A pool of worker goroutines (the consumers) would then process blocks from this channel in parallel
+
